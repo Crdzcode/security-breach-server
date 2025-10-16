@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>POC Socket.IO Client</title>
+  <!-- Cliente Socket.IO (CDN). Certifique-se que a versão é compatível com a do servidor -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 1rem; }
+    input, button { padding: .5rem; margin-right: .5rem; }
+    pre { background: #111; color: #0f0; padding: .5rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>POC — Express + Socket.IO (Cliente)</h1>
+
+  <div>
+    <label>Servidor:
+      <input id="serverUrl" value="http://localhost:3000" />
+    </label>
+    <button id="btnConnect">Conectar</button>
+    <span id="status">desconectado</span>
+  </div>
+
+  <hr/>
+
+  <div>
+    <h3>Login (teste)</h3>
+    <label>Usuário:
+      <input id="loginName" value="pietra" />
+    </label>
+    <label>Senha:
+      <input id="loginPassword" value="Ts1Exgr9" />
+    </label>
+    <button id="btnLogin">Enviar client:login</button>
+  </div>
+
+  <div>
+    <h3>Ping → Pong (evento bidirecional)</h3>
+    <label>Mensagem:
+      <input id="msg" value="olá do cliente!" />
+    </label>
+    <button id="btnPing">Enviar client:ping</button>
+  </div>
+
+  <div>
+    <h3>Connected Users (tester)</h3>
+    <button id="btnFetchConnected">Get connected users</button>
+  </div>
+
+  <h3>Log</h3>
+  <pre id="log"></pre>
+
+  <script>
+    let socket = null;
+    const $ = (sel) => document.querySelector(sel);
+    const logEl = $('#log');
+
+    function log(...args) {
+      logEl.textContent += args.map(a => typeof a === 'string' ? a : JSON.stringify(a)).join(' ') + '\n';
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    $('#btnFetchConnected').addEventListener('click', async () => {
+      const base = $('#serverUrl').value;
+      const url = base.replace(/\/$/, '') + '/connected-users';
+      console.log('[fetch] GET', url);
+      try {
+        const res = await fetch(url);
+        console.log('[fetch] response status', res.status);
+        console.log('[fetch] response headers', [...res.headers.entries()]);
+        const data = await res.json();
+        console.log('[fetch] body', data);
+        log('[fetch connected-users] got', data);
+      } catch (err) {
+        console.error('[fetch] error', err);
+        log('[fetch connected-users] error', String(err));
+      }
+    });
+
+    // Conectar
+    $('#btnConnect').addEventListener('click', () => {
+      const url = $('#serverUrl').value;
+      if (socket) { try { socket.disconnect(); } catch {} }
+
+      // Conecta ao servidor. Você pode passar auth/query se quiser.
+      socket = io(url, {
+        transports: ['websocket'], // força websocket puro (opcional)
+        // auth: { token: 'abc' },
+        // query: { foo: 'bar' },
+      });
+
+      socket.on('connect', () => {
+        $('#status').textContent = `conectado (id: ${socket.id})`;
+        log('[connect]', { id: socket.id });
+      });
+
+      socket.on('disconnect', (reason) => {
+        $('#status').textContent = `desconectado (${reason})`;
+        log('[disconnect]', { reason });
+      });
+
+      socket.on('connect_error', (err) => {
+        $('#status').textContent = 'erro de conexão';
+        log('[connect_error]', { message: err.message });
+      });
+
+      // Eventos do servidor → cliente
+      socket.on('server:hello', (data) => {
+        log('[server:hello]', data);
+      });
+
+      socket.on('server:pong', (data) => {
+        log('[server:pong]', data);
+      });
+
+      socket.on('server:login_success', (data) => {
+        log('[server:login_success]', data);
+        console.log('server:login_success', data);
+      });
+
+      socket.on('server:login_failure', (data) => {
+        log('[server:login_failure]', data);
+        console.log('server:login_failure', data);
+      });
+    });
+
+    // Emitir um ping com ack
+    $('#btnPing').addEventListener('click', () => {
+      if (!socket || !socket.connected) {
+        return alert('Conecte primeiro!');
+      }
+      const payload = { message: $('#msg').value, sentAt: Date.now() };
+
+      // 2º parâmetro: função ACK (callback opcional que o servidor pode chamar)
+      socket.emit('client:ping', payload, (ack) => {
+        log('[ack from server]', ack);
+      });
+
+      log('[emit client:ping]', payload);
+    });
+
+    $('#btnLogin').addEventListener('click', () => {
+      if (!socket || !socket.connected) {
+        return alert('Conecte primeiro!');
+      }
+      const payload = {
+        name: $('#loginName').value,
+        password: $('#loginPassword').value,
+      };
+      socket.emit('client:login', payload);
+      log('[emit client:login]', payload);
+      console.log('emit client:login', payload);
+    });
+  </script>
+</body>
+</html>
