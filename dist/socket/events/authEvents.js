@@ -97,6 +97,37 @@ function registerAuthEvents(io, socket) {
         io.to('admins').emit('admin:room_update', (0, roomManager_1.toRoomPublic)(room));
         console.log(`[auth] "${user.codename}" entrou na sala ${room.id}`);
     });
+    // ── Reconexão de jogador (sem senha — codename já estava na sala) ───────────
+    socket.on('client:rejoin', ({ codename, roomId }) => {
+        const room = (0, roomManager_1.getRoom)(roomId?.toUpperCase?.());
+        if (!room) {
+            socket.emit('server:rejoin_failure', { message: 'Sala não encontrada.' });
+            return;
+        }
+        const player = room.players.get(codename.toLowerCase());
+        if (!player) {
+            socket.emit('server:rejoin_failure', { message: 'Jogador não encontrado na sala.' });
+            return;
+        }
+        player.socketId = socket.id;
+        player.isConnected = true;
+        socket.join(room.id);
+        const buildPublic = (p) => ({
+            codename: p.codename,
+            displayName: p.displayName,
+            image: p.image,
+            status: p.status,
+            hasVotedEndTurn: p.hasVotedEndTurn,
+            isConnected: p.isConnected,
+        });
+        socket.emit('server:rejoin_success', {
+            phase: room.phase,
+            round: room.round,
+            players: Array.from(room.players.values()).map(buildPublic),
+        });
+        io.to('admins').emit('admin:room_update', (0, roomManager_1.toRoomPublic)(room));
+        console.log(`[auth] "${codename}" reconectado na sala ${room.id} (fase: ${room.phase})`);
+    });
     // ── Watcher público (tela de TV) ───────────────────────────────────────────
     socket.on('client:watch_room', (roomId) => {
         const room = (0, roomManager_1.getRoom)(roomId?.toUpperCase?.());

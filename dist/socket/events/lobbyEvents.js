@@ -53,8 +53,8 @@ function registerLobbyEvents(io, socket) {
             socket.emit('server:error', { message: 'Sala não encontrada.' });
             return;
         }
-        if (room.players.size < 2) {
-            socket.emit('server:error', { message: `São necessários pelo menos 2 jogadores (sala tem ${room.players.size}).` });
+        if (room.players.size < 4) {
+            socket.emit('server:error', { message: `São necessários pelo menos 4 jogadores (sala tem ${room.players.size}). Precisam de ao menos 1 Assassino, 1 Policial, 1 V.I.P e 1 Inocente.` });
             return;
         }
         if (room.phase !== 'lobby') {
