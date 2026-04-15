@@ -224,7 +224,7 @@ export const USERS: User[] = [
     fullName: 'Leticia Lucas',
     image: '/agents/leticia.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
-    modifiers: { strength: '0', intelligence: '-1', dexterity: '+1' },
+    modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
     role: 'player',
   },
 ];
