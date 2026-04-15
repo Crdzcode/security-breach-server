@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: security-breach-server
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_ORIGIN
+        value: https://security-breach-next.vercel.app

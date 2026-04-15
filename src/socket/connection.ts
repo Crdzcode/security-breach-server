@@ -7,7 +7,12 @@ import { registerChatEvents } from './events/chatEvents';
 
 export function setupSocket(io: Server): void {
   io.on('connection', (socket) => {
-    console.log(`[socket] connected: ${socket.id}`);
+    const transport = socket.conn.transport.name;
+    console.log(`[socket] connected: ${socket.id} (transport: ${transport})`);
+
+    socket.conn.on('upgrade', (newTransport) => {
+      console.log(`[socket] upgraded: ${socket.id} polling → ${newTransport.name}`);
+    });
 
     registerAuthEvents(io, socket);
     registerLobbyEvents(io, socket);

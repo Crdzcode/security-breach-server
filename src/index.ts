@@ -5,10 +5,14 @@ import cors from 'cors';
 import { setupSocket } from './socket/connection';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN ?? 'http://localhost:3000';
+
+// Suporta múltiplas origens separadas por vírgula:
+// CLIENT_ORIGIN=https://security-breach-next.vercel.app,http://localhost:3000
+const rawOrigin = process.env.CLIENT_ORIGIN ?? 'http://localhost:3000';
+const allowedOrigins = rawOrigin.split(',').map((o) => o.trim());
 
 const app = express();
-app.use(cors({ origin: CLIENT_ORIGIN }));
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 // Health check
@@ -20,7 +24,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: CLIENT_ORIGIN,
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
   },
 });
@@ -29,5 +33,5 @@ setupSocket(io);
 
 httpServer.listen(PORT, () => {
   console.log(`[server] running on port ${PORT}`);
-  console.log(`[server] accepting connections from ${CLIENT_ORIGIN}`);
+  console.log(`[server] accepting connections from ${allowedOrigins.join(', ')}`);
 });
