@@ -4,6 +4,7 @@ exports.buildDeck = buildDeck;
 exports.cardValue = cardValue;
 exports.handScore = handScore;
 exports.createBlackjackSession = createBlackjackSession;
+exports.createSalvaguardaSession = createSalvaguardaSession;
 exports.playerHit = playerHit;
 exports.playerStand = playerStand;
 exports.playerBust = playerBust;
@@ -77,6 +78,29 @@ function createBlackjackSession(codename, roomId, abilityName, statType, targetC
         phase: 'player_turn',
     };
 }
+/** Creates a survival-check session for downed players (no modifiers, no retry). */
+function createSalvaguardaSession(codename, roomId) {
+    const deck = buildDeck();
+    const playerHand = [dealOne(deck), dealOne(deck)];
+    const dealerHand = [dealOne(deck), { ...dealOne(deck), hidden: true }];
+    return {
+        codename,
+        roomId,
+        abilityName: 'Salvaguarda',
+        statType: 'Força',
+        targetCodename: null,
+        deck,
+        playerHand,
+        dealerHand,
+        modifier: '0',
+        winsNeeded: 1,
+        winsAchieved: 0,
+        hasRetryOnLoss: false,
+        lossRetryUsed: false,
+        phase: 'player_turn',
+        isSalvaguarda: true,
+    };
+}
 /** Player hits — returns null if still under 21, or resolves the round. */
 function playerHit(session) {
     const card = dealOne(session.deck);
@@ -123,7 +147,9 @@ function resolveRound(session, outcome, playerScore, dealerScore) {
         // +1 modifier gets one free retry on loss
         if (session.hasRetryOnLoss && !session.lossRetryUsed) {
             session.lossRetryUsed = true;
-            // Reset for a new round — fresh deal
+            // Salva mão revelada do dealer ANTES de resetar (para exibição da falha)
+            const oldDealerHand = [...session.dealerHand];
+            // Reset para nova rodada — novo baralho
             const deck = buildDeck();
             session.deck = deck;
             session.playerHand = [dealOne(deck), dealOne(deck)];
@@ -133,17 +159,19 @@ function resolveRound(session, outcome, playerScore, dealerScore) {
                 outcome: 'lose',
                 playerScore,
                 dealerScore,
-                dealerHand: session.dealerHand,
+                dealerHand: oldDealerHand, // mão antiga para exibição
                 continuing: true,
+                retryAvailable: true,
             };
         }
         // No retry available — failure
         session.phase = 'complete';
         return { outcome: 'lose', playerScore, dealerScore, dealerHand: session.dealerHand, continuing: false };
     }
-    // outcome === 'draw': doesn't count as win, re-deal
+    // outcome === 'draw' ou vitórias ainda insuficientes: re-deal para próxima rodada
     if (outcome === 'draw' || session.winsAchieved < session.winsNeeded) {
-        // Need more wins — start a fresh round
+        // Salva mão revelada do dealer ANTES de resetar (para exibição do resultado)
+        const oldDealerHand = [...session.dealerHand];
         const deck = buildDeck();
         session.deck = deck;
         session.playerHand = [dealOne(deck), dealOne(deck)];
@@ -153,7 +181,7 @@ function resolveRound(session, outcome, playerScore, dealerScore) {
             outcome,
             playerScore,
             dealerScore,
-            dealerHand: session.dealerHand,
+            dealerHand: oldDealerHand, // mão revelada do dealer para exibição
             continuing: session.winsAchieved < session.winsNeeded,
         };
     }

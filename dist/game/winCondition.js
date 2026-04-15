@@ -19,5 +19,9 @@ function checkWinCondition(room) {
     if (allAssassinsNeutralised) {
         return 'innocents';
     }
+    // Tarefas concluídas — inocentes reestabeleceram o sistema
+    if (room.tasksTotal > 0 && room.tasksRemaining === 0) {
+        return 'innocents';
+    }
     return null;
 }

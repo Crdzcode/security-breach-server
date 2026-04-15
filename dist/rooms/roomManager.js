@@ -34,7 +34,7 @@ function uniqueRoomId() {
     return id;
 }
 // ─── CRUD ─────────────────────────────────────────────────────────────────────
-function createRoom(hostSocketId) {
+function createRoom(hostSocketId, turnDuration = 120, tasks = 0) {
     const id = uniqueRoomId();
     const room = {
         id,
@@ -45,7 +45,16 @@ function createRoom(hostSocketId) {
         pendingActions: [],
         actionLog: [],
         voteCount: 0,
+        nextRoundVoteCount: 0,
         winner: null,
+        turnDuration,
+        roundStartAt: 0,
+        targetedThisRound: [],
+        pendingAutopsyResults: [],
+        pendingVipAutoEscape: undefined,
+        tasksTotal: tasks,
+        tasksRemaining: tasks,
+        chatMessages: new Map(),
     };
     rooms.set(id, room);
     return room;
@@ -82,6 +91,10 @@ function addPlayerToRoom(room, codename, socketId) {
         hasVotedEndTurn: false,
         isConnected: true,
         modifiers: user.modifiers,
+        hasSurvivedDeath: false,
+        firstAidConsumed: false,
+        salvaguardaPlayed: false,
+        wasAutopsied: false,
     };
     room.players.set(codename, player);
     return true;
@@ -131,39 +144,30 @@ function setRoomPhase(room, phase) {
 function resetTurnState(room) {
     room.pendingActions = [];
     room.voteCount = 0;
+    room.nextRoundVoteCount = 0;
+    room.targetedThisRound = [];
+    room.pendingAutopsyResults = [];
+    room.pendingVipAutoEscape = undefined;
     for (const player of room.players.values()) {
         player.hasVotedEndTurn = false;
         player.actionsUsed = 0;
+        player.displayStatus = undefined;
     }
 }
 // ─── Public view helpers ──────────────────────────────────────────────────────
-function toRoomPublic(room, includeClasses = false) {
-    const players = Array.from(room.players.values()).map((p) => ({
-        codename: p.codename,
-        displayName: p.displayName,
-        image: p.image,
-        status: p.status,
-        hasVotedEndTurn: p.hasVotedEndTurn,
-        isConnected: p.isConnected,
-    }));
+function toRoomPublic(room) {
     return {
         id: room.id,
         playerCount: room.players.size,
         phase: room.phase,
         round: room.round,
-        players,
-        ...(includeClasses
-            ? {
-                playersWithClass: Array.from(room.players.values()).map((p) => ({
-                    codename: p.codename,
-                    displayName: p.displayName,
-                    image: p.image,
-                    status: p.status,
-                    hasVotedEndTurn: p.hasVotedEndTurn,
-                    isConnected: p.isConnected,
-                    class: p.class,
-                })),
-            }
-            : {}),
+        players: Array.from(room.players.values()).map((p) => ({
+            codename: p.codename,
+            displayName: p.displayName,
+            image: p.image,
+            status: p.status,
+            hasVotedEndTurn: p.hasVotedEndTurn,
+            isConnected: p.isConnected,
+        })),
     };
 }

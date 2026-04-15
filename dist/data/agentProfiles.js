@@ -22,19 +22,11 @@ const baseAbilities = {
             name: 'Labuta',
             description: 'Realiza uma tarefa. O modificador define quantas chances extras você tem de conseguir.',
         },
-        {
-            name: 'Ligar os pontos',
-            description: 'Tenta deduzir informações sobre uma situação ou jogador. A informação é vaga.',
-        },
     ],
     strength: [
         {
             name: 'Labuta',
             description: 'Realiza uma tarefa. O modificador define quantas chances extras você tem de conseguir.',
-        },
-        {
-            name: 'Lute ou morra',
-            description: 'Salvaguarda. Tenta escapar de um ataque ou situação fatal.',
         },
     ],
 };
@@ -74,10 +66,6 @@ exports.CLASS_ABILITIES = {
         ],
         intelligence: [
             ...baseAbilities.intelligence,
-            {
-                name: 'Autópsia',
-                description: 'Extrai informações do corpo de um agente morto. Revela pistas sobre o assassino.',
-            },
         ],
         strength: [
             ...baseAbilities.strength,
@@ -91,12 +79,9 @@ exports.CLASS_ABILITIES = {
         dexterity: [
             ...baseAbilities.dexterity,
             {
-                name: 'Olhos sempre abertos',
-                description: 'Uso único e passivo. Permite escapar de um ataque letal automaticamente.',
-            },
-            {
                 name: 'Treinamento Especial',
                 description: 'Passiva. Permite realizar duas ações por turno.',
+                isPassive: true,
             },
         ],
         intelligence: [
@@ -106,12 +91,8 @@ exports.CLASS_ABILITIES = {
                 description: 'Cura um jogador, removendo efeitos de envenenamento ou morte iminente.',
             },
             {
-                name: 'Antídoto',
-                description: 'Remove envenenamento de um jogador antes que cause dano.',
-            },
-            {
-                name: 'Lista Restrita',
-                description: 'Remove um inocente da lista de possíveis assassinos, refinando as suspeitas.',
+                name: 'Autópsia',
+                description: 'Examina o corpo de um agente eliminado. Revela a causa da morte e pistas sobre o assassino.',
             },
         ],
         strength: baseAbilities.strength,
@@ -125,9 +106,21 @@ exports.MISSION_BRIEFINGS = {
     'V.I.P': 'Você é o V.I.P — a peça mais importante da resistência. Apenas os policiais sabem quem você é. Sobreviva sem levantar suspeitas. Você tem acesso a informações privilegiadas e pode curar aliados. Um movimento em falso e tudo estará perdido.',
 };
 // ─── Monta AbilityGroups para um jogador dado sua classe e modificadores ──────
+const SURVIVAL_ABILITY = {
+    Inocente: { name: 'Lute ou morra', description: 'Salvaguarda. Tenta escapar de um ataque ou situação fatal.', isPassive: true },
+    Assassino: { name: 'Lute ou morra', description: 'Salvaguarda. Tenta escapar de um ataque ou situação fatal.', isPassive: true },
+    Policial: { name: 'Lute ou morra', description: 'Salvaguarda. Tenta escapar de um ataque ou situação fatal.', isPassive: true },
+    'V.I.P': { name: 'Olhos sempre abertos', description: 'Uso único e passivo. Escapa automaticamente do primeiro ataque letal, sem precisar jogar.', isPassive: true },
+};
 function buildAbilityGroups(agentClass, modifiers) {
     const classAbilities = exports.CLASS_ABILITIES[agentClass];
     return [
+        {
+            statType: 'Força',
+            modifier: '0',
+            abilities: [SURVIVAL_ABILITY[agentClass]],
+            isSurvivalGroup: true,
+        },
         {
             statType: 'Força',
             modifier: modifiers.strength,

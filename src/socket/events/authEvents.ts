@@ -1,6 +1,6 @@
 import type { Server, Socket } from 'socket.io';
 import type { LoginPayload } from '../../types';
-import { findUser, isAdmin } from '../../auth/authService';
+import { findUser, isAdmin, availableLogins } from '../../auth/authService';
 import {
   getRoom,
   addPlayerToRoom,
@@ -15,11 +15,19 @@ export function registerAuthEvents(io: Server, socket: Socket): void {
   socket.on('client:login', (payload: LoginPayload) => {
     const { codename, password, roomId } = payload;
 
-    const user = findUser(codename, password);
-    if (!user) {
-      socket.emit('server:login_failure', { message: 'Credenciais inválidas.' });
+    const result = findUser(codename, password);
+    if (result.error) {
+      if (result.error === 'not_found') {
+        const available = availableLogins();
+        console.log(`[auth] login falhou — codename desconhecido: "${codename}" | logins disponíveis: ${available.join(', ')}`);
+        socket.emit('server:login_failure', { message: 'Credenciais inválidas.' });
+      } else {
+        console.log(`[auth] login falhou — senha incorreta para: "${codename}"`);
+        socket.emit('server:login_failure', { message: 'Credenciais inválidas.' });
+      }
       return;
     }
+    const user = result.user;
 
     // ── Admin ─────────────────────────────────────────────────────────────────
     if (isAdmin(user)) {
@@ -34,12 +42,14 @@ export function registerAuthEvents(io: Server, socket: Socket): void {
 
     // ── Player ────────────────────────────────────────────────────────────────
     if (!roomId) {
+      console.log(`[auth] login falhou — "${user.codename}" não informou roomId`);
       socket.emit('server:login_failure', { message: 'Informe o código da sala.' });
       return;
     }
 
     const room = getRoom(roomId.toUpperCase());
     if (!room) {
+      console.log(`[auth] login falhou — "${user.codename}" tentou entrar em sala inexistente: "${roomId.toUpperCase()}"`);
       socket.emit('server:login_failure', { message: 'Sala não encontrada.' });
       return;
     }
@@ -85,6 +95,7 @@ export function registerAuthEvents(io: Server, socket: Socket): void {
     // Novo jogador
     const added = addPlayerToRoom(room, user.codename, socket.id);
     if (!added) {
+      console.log(`[auth] login falhou — não foi possível adicionar "${user.codename}" à sala ${room.id}`);
       socket.emit('server:login_failure', { message: 'Não foi possível entrar na sala.' });
       return;
     }

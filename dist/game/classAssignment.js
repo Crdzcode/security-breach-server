@@ -6,10 +6,8 @@ const agentProfiles_1 = require("../data/agentProfiles");
 const users_1 = require("../auth/users");
 // ─────────────────────────────────────────────────────────────────────────────
 // Class assignment rules:
-//   1 VIP always
-//   ~20% of remaining players become Assassins (min 1)
-//   ~15% become Police (min 1, only if ≥ 4 players)
-//   rest are Innocent
+//   ≤ 8 players: 1 Assassino, 1 Policial, 1 V.I.P, resto Inocente
+//   > 8 players: 2 Assassinos, 2 Policiais, 1 V.I.P, resto Inocente
 // ─────────────────────────────────────────────────────────────────────────────
 function shuffle(arr) {
     const a = [...arr];
@@ -19,14 +17,11 @@ function shuffle(arr) {
     }
     return a;
 }
-function countForRole(total, pct, min, max) {
-    return Math.min(max, Math.max(min, Math.round(total * pct)));
-}
 function assignClasses(room) {
     const players = shuffle(Array.from(room.players.values()));
     const total = players.length;
-    const assassinCount = countForRole(total - 1, 0.2, 1, 3);
-    const policeCount = total >= 4 ? countForRole(total - 1 - assassinCount, 0.15, 1, 2) : 0;
+    const assassinCount = total > 8 ? 2 : 1;
+    const policeCount = total > 8 ? 2 : 1;
     let idx = 0;
     // VIP
     players[idx++].class = 'V.I.P';
@@ -66,12 +61,20 @@ function assignClasses(room) {
     vip.maxActions = 2;
 }
 // ─── Build the GameStarted payload for a specific player ─────────────────────
-function buildGameStartedPayload(player) {
+function buildGameStartedPayload(player, room) {
     const agentClass = player.class;
     const user = users_1.USERS_MAP.get(player.codename);
+    const teammates = player.teammates
+        .map((codename) => {
+        const teammate = room.players.get(codename);
+        if (!teammate || !teammate.class)
+            return null;
+        return { codename, displayName: teammate.displayName, agentClass: teammate.class };
+    })
+        .filter((t) => t !== null);
     return {
         yourClass: agentClass,
-        teammates: player.teammates,
+        teammates,
         missionBriefing: agentProfiles_1.MISSION_BRIEFINGS[agentClass],
         abilityGroups: (0, agentProfiles_1.buildAbilityGroups)(agentClass, player.modifiers),
         profile: {
