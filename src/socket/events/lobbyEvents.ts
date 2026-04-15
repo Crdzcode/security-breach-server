@@ -90,7 +90,7 @@ export function registerLobbyEvents(io: Server, socket: Socket): void {
 
     // Briefing individual por jogador
     for (const player of room.players.values()) {
-      io.to(player.socketId).emit('server:game_started', buildGameStartedPayload(player));
+      io.to(player.socketId).emit('server:game_started', buildGameStartedPayload(player, room));
     }
 
     // Broadcast estado para a sala (jogadores + watchers TV)

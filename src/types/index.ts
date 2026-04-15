@@ -137,6 +137,15 @@ export interface BlackjackSession {
 
 // ─── Sala ─────────────────────────────────────────────────────────────────────
 
+export interface ChatMessage {
+  id: string;
+  fromCodename: string;
+  fromDisplayName: string;
+  toCodename: string;
+  content: string;
+  timestamp: number;
+}
+
 export interface AutopsyPending {
   actorCodename: string;
   targetCodename: string;
@@ -164,6 +173,7 @@ export interface Room {
   pendingVipAutoEscape?: string;  // codename do VIP que usou a passiva neste turno
   tasksTotal: number;             // total de tarefas definido pelo admin
   tasksRemaining: number;         // tarefas ainda não concluídas
+  chatMessages: Map<string, ChatMessage[]>; // key = "codenameA:codenameB" (sorted)
 }
 
 // ─── Payloads: Cliente → Servidor ────────────────────────────────────────────
@@ -203,9 +213,15 @@ export interface RoomPublic {
   players: PlayerPublic[];
 }
 
+export interface TeammateInfo {
+  codename: string;
+  displayName: string;
+  agentClass: AgentClass;
+}
+
 export interface GameStartedPayload {
   yourClass: AgentClass;
-  teammates: string[];        // codinomes dos aliados
+  teammates: TeammateInfo[];  // aliados com nome e classe
   missionBriefing: string;
   abilityGroups: AbilityGroup[];
   profile: {

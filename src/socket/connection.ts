@@ -3,6 +3,7 @@ import { registerAuthEvents } from './events/authEvents';
 import { registerLobbyEvents } from './events/lobbyEvents';
 import { registerGameEvents } from './events/gameEvents';
 import { registerBlackjackEvents } from './events/blackjackEvents';
+import { registerChatEvents } from './events/chatEvents';
 
 export function setupSocket(io: Server): void {
   io.on('connection', (socket) => {
@@ -12,6 +13,7 @@ export function setupSocket(io: Server): void {
     registerLobbyEvents(io, socket);
     registerGameEvents(io, socket);
     registerBlackjackEvents(io, socket);
+    registerChatEvents(io, socket);
 
     socket.on('disconnect', () => {
       console.log(`[socket] disconnected: ${socket.id}`);

@@ -46,6 +46,7 @@ export function createRoom(hostSocketId: string, turnDuration = 120, tasks = 0):
     pendingVipAutoEscape: undefined,
     tasksTotal: tasks,
     tasksRemaining: tasks,
+    chatMessages: new Map(),
   };
   rooms.set(id, room);
   return room;

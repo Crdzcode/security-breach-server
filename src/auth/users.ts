@@ -191,6 +191,33 @@ export const USERS: User[] = [
     modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
     role: 'player',
   },
+  {
+    codename: 'igor',
+    password: '1234',
+    fullName: 'Igor Brigido',
+    image: '/agents/igor.png',
+    description: 'Nenhuma informação encontrada sobre o agente.',
+    modifiers: { strength: '+1', intelligence: '-1', dexterity: '0' },
+    role: 'player',
+  },
+  {
+    codename: 'jc',
+    password: '1234',
+    fullName: 'João Carlos',
+    image: '/agents/jc.png',
+    description: 'Nenhuma informação encontrada sobre o agente.',
+    modifiers: { strength: '0', intelligence: '+1', dexterity: '-1' },
+    role: 'player',
+  },
+  {
+    codename: 'vg',
+    password: '1234',
+    fullName: 'Guilherme Galdino',
+    image: '/agents/vg.png',
+    description: 'Nenhuma informação encontrada sobre o agente.',
+    modifiers: { strength: '0', intelligence: '-1', dexterity: '+1' },
+    role: 'player',
+  },
 ];
 
 // Map para lookup O(1) por codename
