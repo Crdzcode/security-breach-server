@@ -10,7 +10,7 @@ import type { User } from '../types';
 // Modificadores: '+1' | '0' | '-1'
 //   strength     → Força
 //   intelligence → Inteligência
-//   dexterity    → Dextreza
+//   dexterity    → Destreza
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const USERS: User[] = [

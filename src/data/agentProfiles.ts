@@ -155,7 +155,7 @@ export function buildAbilityGroups(
       abilities: classAbilities.intelligence,
     },
     {
-      statType: 'Dextreza',
+      statType: 'Destreza',
       modifier: modifiers.dexterity as '+1' | '0' | '-1',
       abilities: classAbilities.dexterity,
     },

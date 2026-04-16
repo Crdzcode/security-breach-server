@@ -232,7 +232,7 @@ export function startTurnTimer(io: Server, room: import('../../types').Room): vo
 
 function autopsyDescription(killerStatType: import('../../types').StatType): string {
   if (killerStatType === 'Inteligência') return 'A morte parece calculada, fria. Há sinais claros de planejamento — o assassino age com a cabeça, não com as mãos.';
-  if (killerStatType === 'Dextreza') return 'A ferida é precisa, limpa. Parece ter sido feita por alguém extremamente habilidoso — sem desperdício de movimento.';
+  if (killerStatType === 'Destreza') return 'A ferida é precisa, limpa. Parece ter sido feita por alguém extremamente habilidoso — sem desperdício de movimento.';
   return 'A morte foi brutal, violenta. Há destruição acentuada no corpo — força excessiva foi empregada.';
 }
 

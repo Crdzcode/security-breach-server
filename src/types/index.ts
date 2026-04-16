@@ -7,7 +7,7 @@
 export type Modifier    = '+1' | '0' | '-1';
 export type AgentClass  = 'Inocente' | 'Assassino' | 'Policial' | 'V.I.P';
 export type PlayerStatus = 'alive' | 'hiding' | 'deceased' | 'arrested' | 'downed';
-export type StatType    = 'Força' | 'Inteligência' | 'Dextreza';
+export type StatType    = 'Força' | 'Inteligência' | 'Destreza';
 export type UserRole    = 'player' | 'admin';
 
 export type GamePhase =
