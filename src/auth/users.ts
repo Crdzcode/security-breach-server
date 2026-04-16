@@ -220,7 +220,7 @@ export const USERS: User[] = [
   },
   {
     codename: 'leticia',
-    password: '9GbWuMx5',
+    password: 'let1809',
     fullName: 'Leticia Lucas',
     image: '/agents/leticia.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
