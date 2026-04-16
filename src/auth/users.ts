@@ -227,6 +227,15 @@ export const USERS: User[] = [
     modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
     role: 'player',
   },
+  {
+    codename: 'crdz',
+    password: 'mJ4RpKw7',
+    fullName: 'Matheus Cardoso',
+    image: '/agents/crdz.png',
+    description: 'Nenhuma informação encontrada sobre o agente.',
+    modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
+    role: 'player',
+  },
 ];
 
 // Map para lookup O(1) por codename
