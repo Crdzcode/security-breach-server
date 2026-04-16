@@ -164,6 +164,7 @@ export interface Room {
   actionLog: string[];
   voteCount: number;
   nextRoundVoteCount: number;
+  nextRoundVotesNeeded: number;  // snapshot calculado ao entrar na fase report
   winner: WinnerSide;
   turnDuration: number;    // seconds
   roundStartAt: number;    // Date.now() when action phase began

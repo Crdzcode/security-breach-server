@@ -156,18 +156,21 @@ function registerGameEvents(io, socket) {
         const { room, player } = found;
         if (room.phase !== 'report')
             return;
-        // Prevent double-vote by re-using hasVotedEndTurn flag
+        // Só jogadores vivos e conectados podem votar
+        if (player.status !== 'alive' || !player.isConnected)
+            return;
+        // Prevent double-vote
         if (player.hasVotedEndTurn)
             return;
         player.hasVotedEndTurn = true;
         room.nextRoundVoteCount++;
-        const eligible = Array.from(room.players.values()).filter((p) => p.status === 'alive' && !p.displayStatus && p.isConnected);
-        const needed = eligible.length;
+        // Usa o snapshot fixo calculado ao entrar na fase report
+        const needed = room.nextRoundVotesNeeded;
         io.in(room.id).emit('server:next_round_vote', {
             votes: room.nextRoundVoteCount,
             needed,
         });
-        if (room.nextRoundVoteCount >= needed) {
+        if (needed > 0 && room.nextRoundVoteCount >= needed) {
             startNextRound(io, room);
         }
     });
@@ -283,11 +286,12 @@ function endTurn(io, room) {
     const winner = (0, winCondition_1.checkWinCondition)(room);
     room.winner = winner;
     (0, roomManager_1.setRoomPhase)(room, winner ? 'game_over' : 'report');
-    // Reset hasVotedEndTurn so it can be used for next-round voting
+    // Reset e snapshot de votos — calculado UMA VEZ aqui para não variar com desconexões
     for (const player of room.players.values()) {
         player.hasVotedEndTurn = false;
     }
     room.nextRoundVoteCount = 0;
+    room.nextRoundVotesNeeded = Array.from(room.players.values()).filter((p) => p.status === 'alive' && !p.displayStatus && p.isConnected).length;
     const classReveal = winner
         ? Object.fromEntries(Array.from(room.players.entries())
             .filter(([, p]) => p.class !== null)

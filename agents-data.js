@@ -201,7 +201,7 @@ const agentsData = {
                 habilities: assassinAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: assassinAbilities.dexterity
             },
@@ -230,7 +230,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -258,7 +258,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -286,7 +286,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "0",
                 habilities: innocentAbilities.dexterity
             },
@@ -314,7 +314,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -342,7 +342,7 @@ const agentsData = {
                 habilities: vipAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: vipAbilities.dexterity
             },
@@ -372,7 +372,7 @@ const agentsData = {
                 habilities: copAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: copAbilities.dexterity
             },
@@ -402,7 +402,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "-1",
                 habilities: innocentAbilities.dexterity
             },
@@ -430,7 +430,7 @@ const agentsData = {
                 habilities: copAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "0",
                 habilities: copAbilities.dexterity
             },
@@ -460,7 +460,7 @@ const agentsData = {
                 habilities: assassinAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: assassinAbilities.dexterity
             },
@@ -489,7 +489,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -517,7 +517,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "-1",
                 habilities: innocentAbilities.dexterity
             },
@@ -545,7 +545,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "-1",
                 habilities: innocentAbilities.dexterity
             },
@@ -573,7 +573,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -601,7 +601,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "+1",
                 habilities: innocentAbilities.dexterity
             },
@@ -629,7 +629,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "-1",
                 habilities: innocentAbilities.dexterity
             },
@@ -657,7 +657,7 @@ const agentsData = {
                 habilities: innocentAbilities.intelligence
             },
             {
-                type: "Dextreza",
+                type: "Destreza",
                 buff: "-1",
                 habilities: innocentAbilities.dexterity
             },

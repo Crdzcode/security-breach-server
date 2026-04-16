@@ -46,6 +46,7 @@ function createRoom(hostSocketId, turnDuration = 120, tasks = 0) {
         actionLog: [],
         voteCount: 0,
         nextRoundVoteCount: 0,
+        nextRoundVotesNeeded: 0,
         winner: null,
         turnDuration,
         roundStartAt: 0,
