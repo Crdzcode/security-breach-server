@@ -210,7 +210,7 @@ function startTurnTimer(io, room) {
 function autopsyDescription(killerStatType) {
     if (killerStatType === 'Inteligência')
         return 'A morte parece calculada, fria. Há sinais claros de planejamento — o assassino age com a cabeça, não com as mãos.';
-    if (killerStatType === 'Dextreza')
+    if (killerStatType === 'Destreza')
         return 'A ferida é precisa, limpa. Parece ter sido feita por alguém extremamente habilidoso — sem desperdício de movimento.';
     return 'A morte foi brutal, violenta. Há destruição acentuada no corpo — força excessiva foi empregada.';
 }

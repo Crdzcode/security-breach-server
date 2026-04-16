@@ -132,7 +132,7 @@ function buildAbilityGroups(agentClass, modifiers) {
             abilities: classAbilities.intelligence,
         },
         {
-            statType: 'Dextreza',
+            statType: 'Destreza',
             modifier: modifiers.dexterity,
             abilities: classAbilities.dexterity,
         },

@@ -11,7 +11,7 @@ exports.USERS_MAP = exports.USERS = void 0;
 // Modificadores: '+1' | '0' | '-1'
 //   strength     → Força
 //   intelligence → Inteligência
-//   dexterity    → Dextreza
+//   dexterity    → Destreza
 // ─────────────────────────────────────────────────────────────────────────────
 exports.USERS = [
     // ── Admin ─────────────────────────────────────────────────────────────────
@@ -180,7 +180,7 @@ exports.USERS = [
     },
     {
         codename: 'igor',
-        password: '7mXkJe3B',
+        password: 'rocketleague2412',
         fullName: 'Igor Brigido',
         image: '/agents/igor.png',
         description: 'Nenhuma informação encontrada sobre o agente.',
@@ -189,11 +189,11 @@ exports.USERS = [
     },
     {
         codename: 'jc',
-        password: 'Qz8vHcL4',
+        password: 'joao24715199',
         fullName: 'João Carlos',
         image: '/agents/jc.png',
         description: 'Nenhuma informação encontrada sobre o agente.',
-        modifiers: { strength: '0', intelligence: '+1', dexterity: '-1' },
+        modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
         role: 'player',
     },
     {
@@ -207,11 +207,20 @@ exports.USERS = [
     },
     {
         codename: 'leticia',
-        password: '9GbWuMx5',
+        password: 'let1809',
         fullName: 'Leticia Lucas',
         image: '/agents/leticia.png',
         description: 'Nenhuma informação encontrada sobre o agente.',
-        modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
+        modifiers: { strength: '0', intelligence: '+1', dexterity: '-1' },
+        role: 'player',
+    },
+    {
+        codename: 'crdz',
+        password: '290403',
+        fullName: 'Matheus Cardoso',
+        image: '/agents/crdz.png',
+        description: 'Nenhuma informação encontrada sobre o agente.',
+        modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
         role: 'player',
     },
 ];
