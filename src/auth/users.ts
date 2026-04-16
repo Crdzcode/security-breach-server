@@ -193,7 +193,7 @@ export const USERS: User[] = [
   },
   {
     codename: 'igor',
-    password: '7mXkJe3B',
+    password: 'rocketleague2412',
     fullName: 'Igor Brigido',
     image: '/agents/igor.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
@@ -202,11 +202,11 @@ export const USERS: User[] = [
   },
   {
     codename: 'jc',
-    password: 'Qz8vHcL4',
+    password: 'joao24715199',
     fullName: 'João Carlos',
     image: '/agents/jc.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
-    modifiers: { strength: '0', intelligence: '+1', dexterity: '-1' },
+    modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
     role: 'player',
   },
   {
@@ -224,12 +224,12 @@ export const USERS: User[] = [
     fullName: 'Leticia Lucas',
     image: '/agents/leticia.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
-    modifiers: { strength: '-1', intelligence: '+1', dexterity: '0' },
+    modifiers: { strength: '0', intelligence: '+1', dexterity: '-1' },
     role: 'player',
   },
   {
     codename: 'crdz',
-    password: 'mJ4RpKw7',
+    password: '290403',
     fullName: 'Matheus Cardoso',
     image: '/agents/crdz.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
