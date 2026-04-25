@@ -223,6 +223,24 @@ exports.USERS = [
         modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
         role: 'player',
     },
+    {
+        codename: 'farias',
+        password: 'mortadela',
+        fullName: 'Gabriel Farias',
+        image: '/agents/farias.png',
+        description: 'Nenhuma informação encontrada sobre o agente.',
+        modifiers: { strength: '0', intelligence: '-1', dexterity: '+1' },
+        role: 'player',
+    },
+    {
+        codename: 'diego',
+        password: 'muçarela4',
+        fullName: 'Diego Matheus',
+        image: '/agents/diego.png',
+        description: 'Nenhuma informação encontrada sobre o agente.',
+        modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
+        role: 'player',
+    },
 ];
 // Map para lookup O(1) por codename
 exports.USERS_MAP = new Map(exports.USERS.map((u) => [u.codename, u]));
