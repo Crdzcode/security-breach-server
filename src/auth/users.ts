@@ -236,6 +236,15 @@ export const USERS: User[] = [
     modifiers: { strength: '+1', intelligence: '0', dexterity: '-1' },
     role: 'player',
   },
+  {
+    codename: 'farias',
+    password: 'mortadela',
+    fullName: 'Gabriel Farias',
+    image: '/agents/unknown.png',
+    description: 'Nenhuma informação encontrada sobre o agente.',
+    modifiers: { strength: '0', intelligence: '-1', dexterity: '+1' },
+    role: 'player',
+  },
 ];
 
 // Map para lookup O(1) por codename
