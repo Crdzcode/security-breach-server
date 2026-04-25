@@ -9,7 +9,7 @@ import {
   resetTurnState,
 } from '../../rooms/roomManager';
 import { assignClasses, buildGameStartedPayload } from '../../game/classAssignment';
-import { startTurnTimer } from './gameEvents';
+import { startTurnTimer, startNextRound } from './gameEvents';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Lobby events (admin-only)
@@ -106,5 +106,21 @@ export function registerLobbyEvents(io: Server, socket: Socket): void {
     io.to('admins').emit('admin:room_update', toRoomPublic(room));
 
     console.log(`[lobby] jogo iniciado na sala ${room.id} com ${room.players.size} jogadores`);
+  });
+
+  // Admin: forçar início da próxima rodada
+  socket.on('admin:force_next_round', (roomId: string) => {
+    const room = getRoom(roomId);
+    if (!room) {
+      socket.emit('server:error', { message: 'Sala não encontrada.' });
+      return;
+    }
+    if (room.phase !== 'report') {
+      socket.emit('server:error', { message: 'Só é possível forçar a próxima rodada durante a fase de relatório.' });
+      return;
+    }
+
+    startNextRound(io, room);
+    console.log(`[lobby] admin forçou próxima rodada na sala ${roomId}`);
   });
 }

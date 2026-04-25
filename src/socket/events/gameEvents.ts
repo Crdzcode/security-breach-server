@@ -343,7 +343,7 @@ export function endTurn(io: Server, room: import('../../types').Room): void {
 // Start next round
 // ─────────────────────────────────────────────────────────────────────────────
 
-function startNextRound(io: Server, room: import('../../types').Room): void {
+export function startNextRound(io: Server, room: import('../../types').Room): void {
   room.round++;
   setRoomPhase(room, 'action');
   resetTurnState(room);
