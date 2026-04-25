@@ -83,4 +83,18 @@ function registerLobbyEvents(io, socket) {
         io.to('admins').emit('admin:room_update', (0, roomManager_1.toRoomPublic)(room));
         console.log(`[lobby] jogo iniciado na sala ${room.id} com ${room.players.size} jogadores`);
     });
+    // Admin: forçar início da próxima rodada
+    socket.on('admin:force_next_round', (roomId) => {
+        const room = (0, roomManager_1.getRoom)(roomId);
+        if (!room) {
+            socket.emit('server:error', { message: 'Sala não encontrada.' });
+            return;
+        }
+        if (room.phase !== 'report') {
+            socket.emit('server:error', { message: 'Só é possível forçar a próxima rodada durante a fase de relatório.' });
+            return;
+        }
+        (0, gameEvents_1.startNextRound)(io, room);
+        console.log(`[lobby] admin forçou próxima rodada na sala ${roomId}`);
+    });
 }

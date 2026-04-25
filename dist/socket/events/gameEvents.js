@@ -4,6 +4,7 @@ exports.blackjackSessions = void 0;
 exports.registerGameEvents = registerGameEvents;
 exports.startTurnTimer = startTurnTimer;
 exports.endTurn = endTurn;
+exports.startNextRound = startNextRound;
 const roomManager_1 = require("../../rooms/roomManager");
 const blackjack_1 = require("../../game/blackjack");
 const resolveAction_1 = require("../../game/actions/resolveAction");
