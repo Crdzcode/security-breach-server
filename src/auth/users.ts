@@ -247,7 +247,7 @@ export const USERS: User[] = [
   },
   {
     codename: 'diego',
-    password: 'mortadela',
+    password: 'muçarela4',
     fullName: 'Diego Matheus',
     image: '/agents/diego.png',
     description: 'Nenhuma informação encontrada sobre o agente.',
